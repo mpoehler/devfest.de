@@ -4,20 +4,21 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 
-skip_files:
-- (.*/)?.git/.*
-
 handlers:
 - url: /.well-known/acme-challenge/.*
   script: letsencrypt.app
 
 - url: /bower_components
-  static_dir: /bower_components
+  static_dir: bower_components
+  secure: always
+
+- url: /img
+  static_dir: img
   secure: always
 
 - url: /.*
-  static_files: /index.html
-  upload: /index.html
+  static_files: index.html
+  upload: index.html
   secure: always
 
 libraries:
