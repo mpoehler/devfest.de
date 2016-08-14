@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css">
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
+      .devfest-card.mdl-card {
+        width: 320px;
+        height: 270px;
+      }
+      .devfest-card > .mdl-card__title {
+        color: #fff;
+      }
+      .gm-style-iw {
+        width: 320px !important;
+        top: 28px !important; // move the infowindow 15px down
+        left: 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script type="text/javascript">
+
+var devfests = [
+  {
+    'name': 'GDG DevFest Hamburg',
+    'venue': 'Mindspace Hamburg',
+    'date': '14. - 15.10.2016',
+    'address': 'Rödingsmarkt 9, 20459 Hamburg',
+    'coords': { lat: 53.548181, lng: 9.987249 },
+    'image': 'dfhh.jpg',
+    'link': 'https://hamburg.devfest.de'
+  },
+  {
+    'name': 'GDG DevFest Berlin',
+    'venue': 'ImmobilienScout24',
+    'date': '11. - 12.11.2016',
+    'address': 'Andreasstr. 10, 10243 Berlin',
+    'coords': { lat: 52.512636, lng: 13.431286 },
+    'image': '',
+    'link': 'https://2016.devfest-berlin.de/'
+  },
+  {
+    'name': 'GDG DevFest Karlsruhe',
+    'venue': 'Schauburg',
+    'date': '21.11.2016',
+    'address': 'Marienstraße 16, 76137 Karlsruhe',
+    'coords': { lat: 49.003421, lng: 8.407808 },
+    'image': 'dfka.jpg',
+    'link': 'http://www.devfestka.de'
+  }
+];
+
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 51.367198, lng: 10.538231},
+    zoom: 6
+  });
+
+  let infowindow = new google.maps.InfoWindow();
+
+  for (var i=0; i<devfests.length; i++) {
+    let devfest = devfests[i];
+    let marker = new google.maps.Marker({
+        position: devfest.coords,
+        map: map,
+        title: devfest.name
+      });
+
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+      infowindow.setContent('<div id="content" class="devfest-card mdl-card mdl-shadow--2dp mdl-cell">'+
+        '<div class="mdl-card__title mdl-card--expand" style="background: url(\''+devfest.image+'\') no-repeat #696969;">'+
+          '<h2 class="mdl-card__title-text">'+devfest.name+'</h2>'+
+        '</div>'+
+        '<div class="mdl-card__supporting-text">'+
+        devfest.date + '<br/>'+
+        devfest.venue + '<br/>'+
+        devfest.address +
+        '</div>'+
+        '<div class="mdl-card__actions mdl-card--border">'+
+        '  <a href="'+devfest.link+'" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-button">Visit Website</a>'+
+        '</div>'+
+      '</div>');
+
+      // some dirty fixes to the infowindow styles
+      // hide infowindow frame
+      document.querySelector('.gm-style-iw').parentElement.querySelector(':nth-child(2)').style.display = 'none';
+      document.querySelector('.gm-style-iw').parentElement.querySelector(':nth-child(4)').style.display = 'none';
+      // replace close button
+      document.querySelector('.gm-style-iw').nextSibling.style.right = '60px';
+      document.querySelector('.gm-style-iw').nextSibling.style.top = '40px';
+    });
+  }
+}
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnPKOQ4MOgcHcvs2XxltuII8PWNrDj8Uw&callback=initMap">
+    </script>
+    <script async src="/bower_components/material-design-lite/material.min.js"></script>
+  </body>
+</html>
